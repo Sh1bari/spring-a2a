@@ -3,12 +3,12 @@ name: Run Spring Boot REST TCK
 on:
   push:
     branches:
-      - main
+      - master
     paths-ignore:
       - '**/docs/**'
   pull_request:
     branches:
-      - main
+      - master
     paths-ignore:
       - '**/docs/**'
   workflow_dispatch:
@@ -41,7 +41,7 @@ jobs:
           cache: maven
 
       - name: Build Spring Boot server modules
-        run: mvn -B -pl server -am test
+        run: mvn -B -f spring-boot/pom.xml -pl server -am test
 
       - name: Checkout a2a-tck
         uses: actions/checkout@v6
