@@ -5,21 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.a2aproject.sdk</groupId>
-        <artifactId>a2a-java-sdk-spring-boot-server</artifactId>
-        <version>1.1.0.Final</version>
+        <groupId>io.github.sh1bari</groupId>
+        <artifactId>a2a-spring-boot-server</artifactId>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>a2a-java-sdk-spring-boot-server-autoconfigure</artifactId>
+    <artifactId>a2a-spring-boot-server-autoconfigure</artifactId>
     <packaging>jar</packaging>
 
-    <name>A2A Java SDK - Spring Boot Server AutoConfiguration</name>
+    <name>A2A Spring Boot Server AutoConfiguration</name>
     <description>Spring Boot auto-configuration for the A2A server runtime</description>
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>org.a2aproject.sdk</groupId>
             <artifactId>a2a-java-sdk-server-common</artifactId>
         </dependency>
         <dependency>

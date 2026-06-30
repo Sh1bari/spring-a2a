@@ -2,14 +2,20 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TCK_DIR="${TCK_DIR:-${ROOT_DIR}/a2a-tck}"
+TCK_DIR="${TCK_DIR:-a2a-tck}"
 SUT_URL="${SUT_URL:-http://localhost:9999}"
-SUT_MODULE="${SUT_MODULE:-integrations/spring-boot/server/rest/spring-boot-server-rest-sut}"
+SUT_MODULE="${SUT_MODULE:-spring-boot/server/rest/spring-boot-server-rest-sut}"
 SUT_LOG="${SUT_LOG:-${ROOT_DIR}/spring-boot-rest-sut.log}"
 TCK_LOG="${TCK_LOG:-${ROOT_DIR}/tck-output.log}"
 SUT_PID_FILE="${SUT_PID_FILE:-${ROOT_DIR}/spring-boot-rest-sut.pid}"
 STARTUP_TIMEOUT_SECONDS="${STARTUP_TIMEOUT_SECONDS:-120}"
 RETRY_INTERVAL_SECONDS="${RETRY_INTERVAL_SECONDS:-2}"
+
+if [[ "${TCK_DIR}" != /* ]]; then
+  TCK_DIR="${ROOT_DIR}/${TCK_DIR}"
+fi
+
+SUT_MODULE_DIR="${ROOT_DIR}/${SUT_MODULE}"
 
 cleanup() {
   if [[ -f "${SUT_PID_FILE}" ]]; then
@@ -26,11 +32,11 @@ if [[ ! -d "${TCK_DIR}" ]]; then
 fi
 
 echo "Starting Spring Boot REST SUT from ${SUT_MODULE}"
-mvn -B -pl "${SUT_MODULE}" -am package -DskipTests > "${SUT_LOG}" 2>&1
+mvn -B -f "${ROOT_DIR}/pom.xml" -pl "${SUT_MODULE}" -am package -DskipTests > "${SUT_LOG}" 2>&1
 
-SUT_JAR_PATH="$(find "${ROOT_DIR}/${SUT_MODULE}/target" -maxdepth 1 -name '*.jar' ! -name '*sources.jar' ! -name '*javadoc.jar' | head -n 1)"
+SUT_JAR_PATH="$(find "${SUT_MODULE_DIR}/target" -maxdepth 1 -name '*.jar' ! -name '*sources.jar' ! -name '*javadoc.jar' | head -n 1)"
 if [[ -z "${SUT_JAR_PATH}" ]]; then
-  echo "Could not find SUT jar in ${ROOT_DIR}/${SUT_MODULE}/target" >&2
+  echo "Could not find SUT jar in ${SUT_MODULE_DIR}/target" >&2
   exit 1
 fi
 

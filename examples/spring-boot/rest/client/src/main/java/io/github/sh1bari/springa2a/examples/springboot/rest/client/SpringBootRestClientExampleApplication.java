@@ -8,7 +8,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(SpringBootRestClientExampleProperties.class)
 public class SpringBootRestClientExampleApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBootRestClientExampleApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SpringBootRestClientExampleApplication.class, args);
+	}
+
 }

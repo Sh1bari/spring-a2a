@@ -1,6 +1,10 @@
-# A2A Java SDK - Spring Boot Client Integration
+# A2A Spring Boot Client Integration
 
 This directory is reserved for future client-oriented Spring Boot integration modules.
+
+## Source Of Truth
+
+- [Documentation index](../../docs/README.md)
 
 ## Status
 

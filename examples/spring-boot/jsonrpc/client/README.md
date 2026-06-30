@@ -1,6 +1,10 @@
-# A2A Java SDK - Spring Boot JSON-RPC Client Example
+# A2A Spring Boot JSON-RPC Client Example
 
-Reserved for a future Spring Boot JSON-RPC client example.
+JSON-RPC Spring Boot client example is not implemented yet.
+
+## Source Of Truth
+
+- [Documentation index](../../../../docs/README.md)
 
 ## Build
 

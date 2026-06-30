@@ -1,6 +1,10 @@
-# A2A Java SDK - Spring Boot gRPC Client Example
+# A2A Spring Boot gRPC Client Example
 
-Reserved for a future Spring Boot gRPC client example.
+gRPC Spring Boot client example is not implemented yet.
+
+## Source Of Truth
+
+- [Documentation index](../../../../docs/README.md)
 
 ## Build
 

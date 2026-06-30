@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.a2aproject.sdk</groupId>
-        <artifactId>spring-a2a-parent</artifactId>
-        <version>1.1.0.Final</version>
-        <relativePath>../../pom.xml</relativePath>
+        <groupId>io.github.sh1bari</groupId>
+        <artifactId>a2a-spring-boot-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>a2a-java-sdk-spring-boot</artifactId>
+    <artifactId>a2a-spring-boot</artifactId>
     <packaging>pom</packaging>
 
-    <name>A2A Java SDK - Spring Boot Integration</name>
-    <description>Spring Boot integration for A2A Java SDK</description>
+    <name>A2A Spring Boot Integration</name>
+    <description>Spring Boot integration for A2A</description>
 
     <modules>
         <module>server</module>

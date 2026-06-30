@@ -4,18 +4,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.a2aproject.sdk</groupId>
-    <artifactId>spring-a2a-parent</artifactId>
-    <version>1.1.0.Final</version>
+    <groupId>io.github.sh1bari</groupId>
+    <artifactId>a2a-spring-boot-parent</artifactId>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>A2A Java SDK - Spring Boot Extract</name>
-    <description>Standalone Spring Boot integration and examples extracted from the A2A Java SDK.</description>
+    <name>A2A Spring Boot</name>
+    <description>Standalone Spring Boot integration and examples for A2A.</description>
+
+    <url>https://github.com/sh1bari/a2a-spring-boot</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
+        <revision>0.1.0-SNAPSHOT</revision>
+        <a2a.sdk.version>1.1.0.Final</a2a.sdk.version>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-javaformat.version>0.0.47</spring-javaformat.version>
         <spring-boot.version>3.5.0</spring-boot.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -23,64 +37,106 @@
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-bom</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-server-common</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-client</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-client-transport-rest</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-jsonrpc-common</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-tests-server-common</artifactId>
-                <version>${project.version}</version>
+                <version>${a2a.sdk.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.a2aproject.sdk</groupId>
-                <artifactId>a2a-java-sdk-spring-boot-server-autoconfigure</artifactId>
-                <version>${project.version}</version>
+                <groupId>io.github.sh1bari</groupId>
+                <artifactId>a2a-spring-boot-server-autoconfigure</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.a2aproject.sdk</groupId>
-                <artifactId>a2a-java-sdk-spring-boot-server-rest</artifactId>
-                <version>${project.version}</version>
+                <groupId>io.github.sh1bari</groupId>
+                <artifactId>a2a-spring-boot-server-rest</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.a2aproject.sdk</groupId>
-                <artifactId>a2a-java-sdk-spring-boot-starter-server-rest</artifactId>
-                <version>${project.version}</version>
+                <groupId>io.github.sh1bari</groupId>
+                <artifactId>a2a-spring-boot-starter-server-rest</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.a2aproject.sdk</groupId>
-                <artifactId>a2a-java-sdk-spring-boot-server-rest-sut</artifactId>
-                <version>${project.version}</version>
+                <groupId>io.github.sh1bari</groupId>
+                <artifactId>a2a-spring-boot-server-rest-sut</artifactId>
+                <version>${revision}</version>
             </dependency>
             <dependency>
-                <groupId>org.a2aproject.sdk</groupId>
-                <artifactId>a2a-java-sdk-spring-boot-server-integration-tests</artifactId>
-                <version>${project.version}</version>
+                <groupId>io.github.sh1bari</groupId>
+                <artifactId>a2a-spring-boot-server-integration-tests</artifactId>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.spring.javaformat</groupId>
+                <artifactId>spring-javaformat-maven-plugin</artifactId>
+                <version>${spring-javaformat.version}</version>
+                <executions>
+                    <execution>
+                        <id>spring-javaformat-validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>

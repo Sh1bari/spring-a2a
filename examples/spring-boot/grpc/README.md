@@ -1,6 +1,10 @@
-# A2A Java SDK - Spring Boot gRPC Examples
+# A2A Spring Boot gRPC Examples
 
-Reserved for future Spring Boot gRPC examples.
+gRPC Spring Boot examples are not implemented yet.
+
+## Source Of Truth
+
+- [Documentation index](../../../docs/README.md)
 
 ## Build
 
