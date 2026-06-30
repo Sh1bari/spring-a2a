@@ -1,6 +1,10 @@
-# A2A Java SDK - Spring Boot JSON-RPC Examples
+# A2A Spring Boot JSON-RPC Examples
 
-Reserved for future Spring Boot JSON-RPC examples.
+JSON-RPC Spring Boot examples are not implemented yet.
+
+## Source Of Truth
+
+- [Documentation index](../../../docs/README.md)
 
 ## Build
 

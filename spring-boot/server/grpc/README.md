@@ -1,5 +1,5 @@
-# A2A Java SDK - Spring Boot Server gRPC Aggregator
+# A2A Spring Boot Server gRPC Aggregator
 
-This directory is reserved for the future gRPC Spring Boot server integration.
+gRPC Spring Boot server integration is not implemented yet.
 
 The REST integration currently lives under `../rest/`.

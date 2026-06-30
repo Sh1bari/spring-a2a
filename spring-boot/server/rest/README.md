@@ -1,6 +1,11 @@
-# A2A Java SDK - Spring Boot Server REST Aggregator
+# A2A Spring Boot Server REST Aggregator
 
 This directory aggregates the REST-specific Spring Boot server modules.
+
+## Source Of Truth
+
+- [Documentation index](../../../docs/README.md)
+- [REST TCK workflow](TCK.md)
 
 ## Modules
 
@@ -16,19 +21,6 @@ This directory aggregates the REST-specific Spring Boot server modules.
 ## Build
 
 ```bash
-mvn -pl integrations/spring-boot/server/rest -am test
+mvn -pl server/rest -am test
 ```
 
-## TCK SUT
-
-Run the REST TCK end-to-end with:
-
-```bash
-bash ./scripts/run-spring-boot-rest-tck.sh
-```
-
-If you want to run only the REST SUT locally, use:
-
-```bash
-mvn -pl integrations/spring-boot/server/rest/spring-boot-server-rest-sut -am spring-boot:run
-```

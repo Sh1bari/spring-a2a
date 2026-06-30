@@ -1,5 +1,5 @@
-# A2A Java SDK - Spring Boot Server JSON-RPC Aggregator
+# A2A Spring Boot Server JSON-RPC Aggregator
 
-This directory is reserved for the future JSON-RPC Spring Boot server integration.
+JSON-RPC Spring Boot server integration is not implemented yet.
 
 The REST integration currently lives under `../rest/`.

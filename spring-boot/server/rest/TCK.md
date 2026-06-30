@@ -19,7 +19,7 @@ bash ./scripts/run-spring-boot-rest-tck.sh
 
 The script:
 
-1. starts the REST SUT from `integrations/spring-boot/server/rest/spring-boot-server-rest-sut`
+1. starts the REST SUT from `server/rest/spring-boot-server-rest-sut`
 2. waits for `http://localhost:9999/.well-known/agent-card.json`
 3. runs the external `a2a-tck` against that URL
 4. stops the SUT on exit
@@ -29,7 +29,7 @@ The script:
 If you want to run the pieces separately:
 
 ```bash
-mvn -B -pl integrations/spring-boot/server/rest/spring-boot-server-rest-sut -am spring-boot:run
+mvn -B -pl server/rest/spring-boot-server-rest-sut -am spring-boot:run
 ```
 
 In another terminal, run the TCK from the checked-out `a2a-tck` repository:

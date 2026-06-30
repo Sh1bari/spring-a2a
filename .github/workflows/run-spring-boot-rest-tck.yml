@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout a2a-java
+      - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Set up JDK 17
@@ -41,7 +41,7 @@ jobs:
           cache: maven
 
       - name: Build Spring Boot server modules
-        run: mvn -B -pl integrations/spring-boot/server -am test
+        run: mvn -B -pl server -am test
 
       - name: Checkout a2a-tck
         uses: actions/checkout@v6
@@ -65,7 +65,8 @@ jobs:
         id: run-tck
         run: bash ./scripts/run-spring-boot-rest-tck.sh
         env:
-          TCK_DIR: a2a-tck
+          TCK_DIR: ${{ github.workspace }}/a2a-tck
+          SUT_MODULE: spring-boot/server/rest/spring-boot-server-rest-sut
           SUT_URL: ${{ env.SUT_URL }}
 
       - name: TCK Summary
@@ -82,7 +83,7 @@ jobs:
 
       - name: Upload TCK Reports
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v6
         with:
           name: spring-boot-rest-tck-reports
           path: |

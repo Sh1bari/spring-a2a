@@ -1,37 +1,37 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.a2aproject.sdk</groupId>
-        <artifactId>a2a-java-sdk-examples-spring-boot-rest</artifactId>
-        <version>1.1.0.Final</version>
+        <groupId>io.github.sh1bari</groupId>
+        <artifactId>a2a-spring-boot-examples-rest</artifactId>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>a2a-java-sdk-examples-spring-boot-rest-client</artifactId>
+    <artifactId>a2a-spring-boot-examples-rest-client</artifactId>
     <packaging>jar</packaging>
 
-    <name>Java SDK A2A Examples - Spring Boot REST Client</name>
-    <description>Runnable Spring Boot REST client example for the A2A Java SDK</description>
+    <name>A2A Spring Boot REST Client Example</name>
+    <description>Runnable Spring Boot REST client example for A2A</description>
 
     <dependencies>
         <dependency>
             <groupId>org.a2aproject.sdk</groupId>
             <artifactId>a2a-java-sdk-client</artifactId>
-            <version>${project.version}</version>
+            <version>${a2a.sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>org.a2aproject.sdk</groupId>
             <artifactId>a2a-java-sdk-client-transport-rest</artifactId>
-            <version>${project.version}</version>
+            <version>${a2a.sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>org.a2aproject.sdk</groupId>
             <artifactId>a2a-java-sdk-jsonrpc-common</artifactId>
-            <version>${project.version}</version>
+            <version>${a2a.sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,3 +72,4 @@
         </plugins>
     </build>
 </project>
+

@@ -1,6 +1,11 @@
-# A2A Java SDK - Spring Boot REST TCK SUT
+# A2A Spring Boot REST TCK SUT
 
 This module is a runnable Spring Boot REST system-under-test for the external A2A TCK.
+
+## Source Of Truth
+
+- [Documentation index](../../../../docs/README.md)
+- [REST TCK workflow](../TCK.md)
 
 ## What It Is For
 
@@ -13,37 +18,13 @@ This module is a runnable Spring Boot REST system-under-test for the external A2
 From the repository root:
 
 ```bash
-mvn -pl integrations/spring-boot/server/rest/spring-boot-server-rest-sut -am spring-boot:run
+mvn -pl server/rest/spring-boot-server-rest-sut -am spring-boot:run
 ```
 
 The SUT listens on `http://localhost:9999` by default.
 
-## TCK
-
-For the full end-to-end run, use the checked-in helper:
-
-```bash
-bash ./scripts/run-spring-boot-rest-tck.sh
-```
-
-Point the external A2A TCK at the SUT URL:
-
-```text
-http://localhost:9999
-```
-
-The TCK should then verify the REST transport contract against the live Spring Boot app.
-
-If you have the external `a2a-tck` repository checked out, the manual run looks like this:
-
-```bash
-uv run ./run_tck.py --sut-host http://localhost:9999 -v
-```
-
-For CI, see `.github/workflows/run-spring-boot-rest-tck.yml` and `integrations/spring-boot/server/rest/TCK.md`.
-
 ## Build
 
 ```bash
-mvn -pl integrations/spring-boot/server/rest/spring-boot-server-rest-sut -am test
+mvn -pl server/rest/spring-boot-server-rest-sut -am test
 ```
