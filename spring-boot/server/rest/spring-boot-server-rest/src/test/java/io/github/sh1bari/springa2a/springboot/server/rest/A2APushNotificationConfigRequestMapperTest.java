@@ -2,11 +2,15 @@ package io.github.sh1bari.springa2a.springboot.server.rest;
 
 import org.a2aproject.sdk.spec.InvalidParamsError;
 import org.a2aproject.sdk.spec.TaskPushNotificationConfig;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@DisplayName("A2A push notification config request mapper")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class A2APushNotificationConfigRequestMapperTest {
 
 	private final A2APushNotificationConfigRequestMapper mapper = new A2APushNotificationConfigRequestMapper();

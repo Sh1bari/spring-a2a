@@ -1,72 +1,54 @@
 # A2A Spring Boot REST Client Example
 
-This module contains the runnable REST client example and its UI-friendly walkthrough.
+This module contains the runnable client-side guide for the REST example.
 
-## Source Of Truth
+## Interactive Guide
 
-- [Documentation index](../../../../docs/README.md)
+The client renders the browser guide at `GET /guide` and the playground at `GET /guide/playground`.
 
-## Source Layout
+It shows:
 
-- `config/` Spring configuration and typed properties
-- `controller/` REST endpoints that expose the demo flow
-- `dto/` request and response payloads
-- `service/` A2A client orchestration and transport logic
+- real HTTP calls from the client to the A2A server;
+- editable JSON request templates;
+- direct responses and task-based responses;
+- task lookup, subscription, cancellation, and push-notification flows;
+- live streaming events in the emitter panel;
+- incoming push callbacks in a dedicated inbox.
 
-## What It Demonstrates
+![Spring A2A REST example](../../../../assets/rest-example-site.png)
 
-- Discovering the available scenarios via `/demo`
-- Fetching the raw server `AgentCard` only when needed
-- Creating an A2A REST client from the SDK
-- Running a blocking demo flow through a controller endpoint
-- Running a streaming demo flow through a controller endpoint
-- Calling the A2A help flow and receiving the model-backed server response
-- Running a full scenario that combines both flows
-- Inspecting and replaying the demo through Swagger UI
+## What To Expect
 
-## What You Should See
+The client is not a second server implementation.
+It is a browser-facing guide that:
 
-When the client is running, open `GET /demo` first. The response should list the available demo routes and sample prompts.
-
-Then try:
-
-- `POST /demo/blocking` with `hello`
-- `POST /demo/streaming` with `stream this`
-- `POST /demo/help` with `help`
-- `POST /demo/full-flow` to see the combined result
-
-For `help`, the client sends the request through the A2A server and returns the model-backed response from the server.
-
-## Suggested Order
-
-1. Open `GET /demo` to inspect the available scenarios and sample prompts.
-2. Call `GET /demo/agent-card` only if you want the raw discovery payload.
-3. Call `POST /demo/blocking` with `hello`.
-4. Call `POST /demo/streaming` with `stream this`.
-5. Call `POST /demo/help` to make the client request the server model response through A2A.
-6. Call `POST /demo/full-flow` to see the blocking, streaming, and help flows together.
+- sends real A2A requests to the REST server example;
+- stores the current browser session state on the client side;
+- shows the raw server response in a readable format;
+- keeps push callbacks in the current browser inbox.
 
 ## Run
+
+Start the server example first:
 
 ```bash
 mvn -pl examples/spring-boot/rest/server -am spring-boot:run
 ```
 
+Then start the client example:
+
 ```bash
 mvn -pl examples/spring-boot/rest/client -am spring-boot:run
 ```
 
-The client starts on port `18081`.
+The client starts on port `18081` by default.
+
+## Configuration
+
+Update the server URL in `src/main/resources/application.yml` if the A2A server runs on a different host or port.
 
 ## Build
 
 ```bash
-mvn -pl examples/spring-boot/rest/client -am test
+mvn -pl examples/spring-boot/rest/client test
 ```
-
-## What To Change
-
-- `src/main/resources/application.yml` - update `spring.a2a.example.server-url` if the server runs on a different host or port.
-- `SpringBootRestClientExampleProperties` - change the default `hello`, `stream`, or timeout values.
-- `SpringBootRestClientDemoService` - change how the client fetches the agent card or runs the demo flows.
-- `SpringBootRestClientDemoController` - add or remove demo endpoints.

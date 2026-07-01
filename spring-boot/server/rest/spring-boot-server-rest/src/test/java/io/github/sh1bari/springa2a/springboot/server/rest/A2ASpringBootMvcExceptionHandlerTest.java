@@ -1,6 +1,8 @@
 package io.github.sh1bari.springa2a.springboot.server.rest;
 
 import org.a2aproject.sdk.spec.ExtendedAgentCardNotConfiguredError;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 
 import java.time.format.DateTimeParseException;
@@ -8,6 +10,8 @@ import java.time.format.DateTimeParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisplayName("A2A Spring Boot MVC exception handler")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class A2ASpringBootMvcExceptionHandlerTest {
 
 	private final A2ASpringBootMvcExceptionHandler handler = new A2ASpringBootMvcExceptionHandler(

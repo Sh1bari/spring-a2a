@@ -19,6 +19,8 @@ import org.a2aproject.sdk.spec.TaskPushNotificationConfig;
 import org.a2aproject.sdk.spec.TaskState;
 import org.a2aproject.sdk.spec.TaskStatus;
 import org.a2aproject.sdk.spec.TextPart;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
@@ -50,6 +52,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisplayName("A2A Spring Boot REST integration")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 @SpringBootTest(classes = A2ASpringBootIntegrationTest.TestApplication.class,
 		webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -89,6 +93,25 @@ class A2ASpringBootIntegrationTest {
 		mockMvc.perform(get("/.well-known/agent-card.json").header("If-None-Match", etag))
 			.andExpect(status().isNotModified())
 			.andExpect(result -> assertEquals(etag, result.getResponse().getHeader("ETag")));
+	}
+
+	@Test
+	void rejectsUnsupportedProtocolVersionForSendMessage() throws Exception {
+		MessageSendParams params = MessageSendParams.builder()
+			.message(Message.builder()
+				.role(Message.Role.ROLE_USER)
+				.messageId("msg-1")
+				.parts(new TextPart("hello"))
+				.build())
+			.build();
+
+		mockMvc
+			.perform(post("/tenant-a/message:send").contentType(MediaType.APPLICATION_JSON)
+				.header(A2A_VERSION, "2.0")
+				.content(toJson(params)))
+			.andExpect(status().isBadRequest())
+			.andExpect(
+					result -> assertTrue(result.getResponse().getContentAsString().contains("VERSION_NOT_SUPPORTED")));
 	}
 
 	@Test
@@ -341,6 +364,18 @@ class A2ASpringBootIntegrationTest {
 
 		String responseBody = result.getResponse().getContentAsString();
 		assertTrue(responseBody.contains("\"Spring Boot Extended Agent\""));
+	}
+
+	@Test
+	void servesExtendedAgentCardOnRootRoute() throws Exception {
+		MvcResult result = mockMvc
+			.perform(get("/extendedAgentCard").header(A2A_VERSION,
+					agentCard.supportedInterfaces().get(0).protocolVersion()))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andReturn();
+
+		assertTrue(result.getResponse().getContentAsString().contains("\"Spring Boot Extended Agent\""));
 	}
 
 	private String toJson(Object value) throws Exception {

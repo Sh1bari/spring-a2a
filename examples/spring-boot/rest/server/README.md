@@ -9,13 +9,21 @@ This module contains the runnable REST server example.
 ## What It Demonstrates
 
 - Spring Boot auto-configuration from the SDK starter
-- A polished `AgentCard` bean with explicit sample prompts
-- A dedicated `AgentExecutor` Spring component with hello/help/stream branches
-- A model-backed `help` branch driven by `OPENROUTER_API_KEY` and the A2A `help` flow
+- a single `AgentCard` bean with explicit sample prompts
+- a dedicated `AgentExecutor` Spring component with hello/help/stream/cancel branches
+- a model-backed `help` branch driven by `OPENROUTER_API_KEY` and the A2A `help` flow
 - REST transport endpoints exposed by the server module
-- A direct response for greetings
-- A help response that shows how the server calls a model inside A2A
-- A streaming task flow for `stream`
+- discovery through `GET /.well-known/agent-card.json`
+- message exchange through `POST /message:send`
+- streaming task exchange through `POST /message:stream`
+- task lookup through `GET /tasks/{taskId}` and task listing through `GET /tasks`
+- task cancellation through `POST /tasks/{taskId}:cancel`
+- task subscription through `POST /tasks/{taskId}:subscribe`
+- push notification config management through the `/tasks/{taskId}/pushNotificationConfigs` endpoints
+- a direct response for greetings
+- a help response that shows how the server calls a model inside A2A
+- a streaming task flow for `stream`
+- a cancellable task flow for `cancel`
 
 ## What You Should See
 
@@ -25,9 +33,10 @@ If you send the messages below through the client or the A2A transport, you shou
 
 - `hello` - a direct reply from the agent;
 - `stream this` - a streaming task with task updates and a final artifact;
-- `help` - a model-backed help response returned through the A2A executor.
+- `help` - a model-backed help response returned through the A2A executor;
+- `cancel this` - a cancellable task that can be canceled through the REST transport.
 
-If `OPENROUTER_API_KEY` is not configured, `help` still returns a fallback message that explains what is missing.
+If `OPENROUTER_API_KEY` is not configured, `help` still returns `Mock response from LLM` and the app keeps running.
 
 ## Run
 

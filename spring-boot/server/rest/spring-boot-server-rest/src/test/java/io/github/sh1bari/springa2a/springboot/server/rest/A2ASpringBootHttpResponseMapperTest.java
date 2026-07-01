@@ -9,6 +9,8 @@ import org.a2aproject.sdk.spec.Task;
 import org.a2aproject.sdk.spec.TaskState;
 import org.a2aproject.sdk.spec.TaskStatus;
 import org.a2aproject.sdk.spec.TextPart;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.SubmissionPublisher;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisplayName("A2A Spring Boot HTTP response mapper")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class A2ASpringBootHttpResponseMapperTest {
 
 	private final A2ASpringBootHttpResponseMapper mapper = new A2ASpringBootHttpResponseMapper();

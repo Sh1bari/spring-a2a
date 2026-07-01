@@ -4,5 +4,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "spring.a2a.example")
 public record SpringBootRestClientExampleProperties(String serverUrl, String helloMessage, String streamMessage,
-		int streamingTimeoutSeconds) {
+		int streamingTimeoutSeconds, String callbackUrl) {
 }

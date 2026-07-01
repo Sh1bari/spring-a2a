@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+@DisplayName("A2A Spring Boot servlet auto-configuration")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class A2AServletWebAutoConfigurationTest {
 
 	private final ApplicationContextRunner nonWebContextRunner = new ApplicationContextRunner()

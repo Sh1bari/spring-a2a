@@ -28,7 +28,11 @@ import org.a2aproject.sdk.spec.TaskQueryParams;
 import org.a2aproject.sdk.spec.TaskState;
 import org.a2aproject.sdk.spec.TaskStatus;
 import org.a2aproject.sdk.spec.TextPart;
+import org.a2aproject.sdk.spec.VersionNotSupportedError;
+import org.a2aproject.sdk.spec.ExtensionSupportRequiredError;
 import org.a2aproject.sdk.spec.UnsupportedOperationError;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +45,7 @@ import java.util.Map;
 import java.util.concurrent.SubmissionPublisher;
 
 import static org.a2aproject.sdk.common.A2AHeaders.A2A_VERSION;
+import static org.a2aproject.sdk.common.A2AHeaders.A2A_EXTENSIONS;
 import static org.a2aproject.sdk.spec.TransportProtocol.HTTP_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -52,6 +57,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("A2A Spring Boot MVC controller")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class A2ASpringBootMvcControllerTest {
 
 	private final RequestHandler requestHandler = mock(RequestHandler.class);
@@ -247,6 +254,38 @@ class A2ASpringBootMvcControllerTest {
 	}
 
 	@Test
+	void rejectsUnsupportedProtocolVersion() {
+		assertThrows(VersionNotSupportedError.class,
+				() -> controller.sendMessage("tenant-a",
+						toJson(MessageSendParams.builder()
+							.message(Message.builder()
+								.role(Message.Role.ROLE_USER)
+								.messageId("msg-1")
+								.parts(new TextPart("hello"))
+								.build())
+							.build()),
+						httpRequest(Map.of(A2A_VERSION, List.of("2.0")))));
+	}
+
+	@Test
+	void rejectsMissingRequiredExtensionWhenClientDoesNotRequestIt() {
+		A2ASpringBootMvcController extensionAwareController = new A2ASpringBootMvcController(
+				agentCard(true, true, false, true), null, properties, requestHandler, responseMapper,
+				pushNotificationConfigRequestMapper, streamingSubscriptionObserver);
+
+		assertThrows(ExtensionSupportRequiredError.class,
+				() -> extensionAwareController.sendMessage("tenant-a",
+						toJson(MessageSendParams.builder()
+							.message(Message.builder()
+								.role(Message.Role.ROLE_USER)
+								.messageId("msg-1")
+								.parts(new TextPart("hello"))
+								.build())
+							.build()),
+						httpRequest(Map.of(A2A_EXTENSIONS, List.of("other")))));
+	}
+
+	@Test
 	void routesStreamingMessageThroughRequestHandler() throws Exception {
 		SubmissionPublisher<StreamingEventKind> publisher = new SubmissionPublisher<>();
 		when(requestHandler.onMessageSendStream(any(MessageSendParams.class), any(ServerCallContext.class)))
@@ -420,10 +459,15 @@ class A2ASpringBootMvcControllerTest {
 	}
 
 	private AgentCard agentCard() {
-		return agentCard(true, true, false);
+		return agentCard(true, true, false, false);
 	}
 
 	private AgentCard agentCard(boolean streaming, boolean pushNotifications, boolean extendedAgentCard) {
+		return agentCard(streaming, pushNotifications, extendedAgentCard, false);
+	}
+
+	private AgentCard agentCard(boolean streaming, boolean pushNotifications, boolean extendedAgentCard,
+			boolean requiredExtension) {
 		return AgentCard.builder()
 			.name("Spring Boot Test Agent")
 			.description("Test agent for Spring Boot MVC transport")
@@ -432,8 +476,11 @@ class A2ASpringBootMvcControllerTest {
 				.streaming(streaming)
 				.pushNotifications(pushNotifications)
 				.extendedAgentCard(extendedAgentCard)
-				.extensions(List
-					.of(AgentExtension.builder().description("Test extension").uri("trace").required(false).build()))
+				.extensions(List.of(AgentExtension.builder()
+					.description("Test extension")
+					.uri("trace")
+					.required(requiredExtension)
+					.build()))
 				.build())
 			.defaultInputModes(List.of("text"))
 			.defaultOutputModes(List.of("text"))

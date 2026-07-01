@@ -2,6 +2,12 @@ spring:
   application:
     name: a2a-spring-boot-examples-rest-server
   ai:
+    model:
+      chat: disabled
+      embedding: disabled
+      audio:
+        speech: disabled
+        transcription: disabled
     openai:
       base-url: https://openrouter.ai/api
       api-key: ${OPENROUTER_API_KEY:}

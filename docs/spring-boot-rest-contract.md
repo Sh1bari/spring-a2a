@@ -17,15 +17,6 @@ This document is the source of truth for the REST transport surface exposed by t
 | `GET` | `/tasks/{taskId}/pushNotificationConfigs/{configId}` |
 | `GET` | `/tasks/{taskId}/pushNotificationConfigs` |
 | `DELETE` | `/tasks/{taskId}/pushNotificationConfigs/{configId}` |
-| `GET` | `/extendedAgentCard` |
-
-## Tenant Prefix
-
-Where supported, each endpoint also exists under the optional tenant-prefixed form:
-
-```text
-/{tenant}/...
-```
 
 ## What Uses This Contract
 
@@ -33,6 +24,7 @@ Where supported, each endpoint also exists under the optional tenant-prefixed fo
 - `spring-boot/server/rest/spring-boot-server-rest-sut`
 - `spring-boot/server/rest/spring-boot-server-integration-tests`
 - `examples/spring-boot/rest/server`
+- `examples/spring-boot/rest/client`
 
 ## Related Documents
 

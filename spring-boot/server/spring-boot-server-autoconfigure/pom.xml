@@ -17,6 +17,29 @@
     <name>A2A Spring Boot Server AutoConfiguration</name>
     <description>Spring Boot auto-configuration for the A2A server runtime</description>
 
+    <url>https://github.com/Sh1bari/spring-a2a</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>sh1bari</id>
+            <name>Vladimir Krasnov</name>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/Sh1bari/spring-a2a.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/Sh1bari/spring-a2a.git</developerConnection>
+        <url>https://github.com/Sh1bari/spring-a2a</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.a2aproject.sdk</groupId>

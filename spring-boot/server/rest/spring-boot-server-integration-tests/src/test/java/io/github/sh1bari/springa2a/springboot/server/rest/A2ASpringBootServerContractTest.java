@@ -29,6 +29,8 @@ import org.a2aproject.sdk.spec.TaskStatusUpdateEvent;
 import org.a2aproject.sdk.spec.TextPart;
 import org.a2aproject.sdk.spec.TransportProtocol;
 import org.a2aproject.sdk.spec.UnsupportedOperationError;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -57,6 +59,8 @@ import static org.a2aproject.sdk.server.ServerCallContext.TRANSPORT_KEY;
 import static org.a2aproject.sdk.spec.TransportProtocol.HTTP_JSON;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@DisplayName("A2A Spring Boot REST contract")
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 @SpringBootTest(classes = A2ASpringBootServerContractTest.TestApplication.class,
 		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class A2ASpringBootServerContractTest extends AbstractA2AServerTest {
