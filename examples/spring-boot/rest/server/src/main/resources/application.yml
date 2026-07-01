@@ -1,11 +1,15 @@
+spring:
+  application:
+    name: a2a-spring-boot-examples-rest-server
+  a2a:
+    executor:
+      core-pool-size: 2
+      max-pool-size: 4
+      keep-alive-seconds: 60
+      queue-capacity: 32
+    blocking:
+      agent-timeout-seconds: 30
+      consumption-timeout-seconds: 5
+
 server:
   port: 18080
-a2a:
-  executor:
-    core-pool-size: 2
-    max-pool-size: 4
-    keep-alive-seconds: 60
-    queue-capacity: 32
-  blocking:
-    agent-timeout-seconds: 30
-    consumption-timeout-seconds: 5

@@ -6,19 +6,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Spring Boot configuration properties for the A2A server runtime.
  *
  * <p>
- * The properties are intentionally aligned with the core {@code a2a.*} configuration keys
- * already understood by the underlying server modules:
+ * The properties use the Spring-first {@code spring.a2a.*} namespace:
  * <ul>
- * <li>{@code a2a.executor.*} for async worker pool sizing</li>
- * <li>{@code a2a.blocking.*} for blocking request timeout behavior</li>
- * <li>{@code a2a.agent-card.cache.max-age} for discovery caching</li>
+ * <li>{@code spring.a2a.executor.*} for async worker pool sizing</li>
+ * <li>{@code spring.a2a.blocking.*} for blocking request timeout behavior</li>
+ * <li>{@code spring.a2a.agent-card.cache.max-age} for discovery caching</li>
  * </ul>
  *
  * <p>
- * Keeping this class narrow avoids inventing a second Spring-specific configuration
- * surface.
+ * Legacy {@code a2a.*} keys remain supported through the runtime config provider for
+ * backward compatibility.
  */
-@ConfigurationProperties(prefix = "a2a")
+@ConfigurationProperties(prefix = "spring.a2a")
 public class A2ASpringBootProperties {
 
 	private final Executor executor = new Executor();

@@ -9,6 +9,7 @@ import org.a2aproject.sdk.spec.UnsupportedOperationError;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Component
@@ -19,7 +20,16 @@ public class SpringBootRestServerAgentExecutor implements AgentExecutor {
 		String input = context.getUserInput("\n");
 		log.info("AgentExecutor received input: {}", input);
 
-		if (input != null && input.toLowerCase().contains("stream")) {
+		String normalizedInput = input == null ? "" : input.toLowerCase(Locale.ROOT);
+
+		if (normalizedInput.contains("help")) {
+			log.info("Returning capabilities overview");
+			agentEmitter.sendMessage(
+					"This demo understands hello, stream, and help. Try a message containing 'stream' to see task updates.");
+			return;
+		}
+
+		if (normalizedInput.contains("stream")) {
 			log.info("Running streaming task demo");
 			agentEmitter.submit();
 			agentEmitter.startWork();
@@ -29,7 +39,8 @@ public class SpringBootRestServerAgentExecutor implements AgentExecutor {
 		}
 
 		log.info("Returning direct message response");
-		agentEmitter.sendMessage("Hello from Spring Boot REST");
+		agentEmitter.sendMessage(
+				"Hello from Spring Boot REST. Ask for 'help' to see available prompts, or 'stream' to see streaming.");
 	}
 
 	@Override

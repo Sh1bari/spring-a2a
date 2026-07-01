@@ -1,6 +1,12 @@
 # Documentation Index
 
-This directory is the single source of truth for technical guidance in the repository.
+This directory is the technical source of truth for Spring A2A.
+
+Use it when you need exact runtime properties, REST payloads, example wiring, or formatting rules.
+
+## Start Here
+
+- [Project overview](../README.md)
 
 ## Runtime And Protocol
 

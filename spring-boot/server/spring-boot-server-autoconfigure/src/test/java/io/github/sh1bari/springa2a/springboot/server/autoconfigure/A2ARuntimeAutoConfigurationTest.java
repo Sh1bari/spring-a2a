@@ -27,8 +27,8 @@ class A2ARuntimeAutoConfigurationTest {
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 		.withConfiguration(AutoConfigurations.of(A2ARuntimeAutoConfiguration.class))
 		.withBean(AgentCard.class, this::agentCard)
-		.withPropertyValues("a2a.executor.core-pool-size=1", "a2a.executor.max-pool-size=1",
-				"a2a.executor.queue-capacity=1", "a2a.executor.keep-alive-seconds=1");
+		.withPropertyValues("spring.a2a.executor.core-pool-size=1", "spring.a2a.executor.max-pool-size=1",
+				"spring.a2a.executor.queue-capacity=1", "spring.a2a.executor.keep-alive-seconds=1");
 
 	@Test
 	void createsCoreRuntimeBeansWithoutWebEnvironment() {
@@ -76,6 +76,7 @@ class A2ARuntimeAutoConfigurationTest {
 		contextRunner.run(context -> {
 			A2AConfigProvider provider = context.getBean(A2AConfigProvider.class);
 			assertEquals("1", provider.getValue("a2a.executor.core-pool-size"));
+			assertEquals("1", provider.getValue("spring.a2a.executor.core-pool-size"));
 		});
 	}
 

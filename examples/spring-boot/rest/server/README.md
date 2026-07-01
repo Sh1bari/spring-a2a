@@ -9,10 +9,11 @@ This module contains the runnable REST server example.
 ## What It Demonstrates
 
 - Spring Boot auto-configuration from the SDK starter
-- A minimal `AgentCard` bean
-- A dedicated `AgentExecutor` Spring component
+- A polished `AgentCard` bean with explicit sample prompts
+- A dedicated `AgentExecutor` Spring component with hello/help/stream branches
 - REST transport endpoints exposed by the server module
-- A direct message response for `hello`
+- A direct message response for greetings
+- A help-style response that explains what the demo understands
 - A streaming task flow for `stream`
 
 ## Run

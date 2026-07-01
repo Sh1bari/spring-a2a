@@ -19,8 +19,9 @@ public class SpringBootRestServerExampleConfiguration {
 	public AgentCard agentCard() {
 		log.info("Creating Spring Boot REST example agent card");
 		return AgentCard.builder()
-			.name("Spring Boot REST Example Agent")
-			.description("Minimal Spring Boot example for the A2A REST transport")
+			.name("Spring Boot REST Demo Agent")
+			.description(
+					"A small Spring Boot agent that demonstrates discovery, direct replies, and streaming task updates")
 			.supportedInterfaces(
 					List.of(new AgentInterface(TransportProtocol.HTTP_JSON.asString(), "http://localhost:18080")))
 			.version("1.0.0")
@@ -28,11 +29,12 @@ public class SpringBootRestServerExampleConfiguration {
 			.defaultInputModes(List.of("text"))
 			.defaultOutputModes(List.of("text"))
 			.skills(List.of(AgentSkill.builder()
-				.id("spring_boot_rest_example")
-				.name("Spring Boot REST example")
-				.description("Responds with a short fixed message")
+				.id("spring_boot_rest_demo")
+				.name("Spring Boot REST demo")
+				.description(
+						"Replies to hello messages, streams artifacts for stream prompts, and exposes its capabilities")
 				.tags(List.of("spring-boot", "rest", "example"))
-				.examples(List.of("hello"))
+				.examples(List.of("hello", "stream this", "help"))
 				.build()))
 			.build();
 	}

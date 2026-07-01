@@ -1,0 +1,18 @@
+package io.github.sh1bari.springa2a.examples.springboot.rest.client.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record SpringBootRestClientFullFlowResponse(boolean success, String serverUrl,
+		SpringBootRestClientScenarioResponse blocking, SpringBootRestClientScenarioResponse streaming,
+		String errorMessage) {
+
+	public static SpringBootRestClientFullFlowResponse success(String serverUrl,
+			SpringBootRestClientScenarioResponse blocking, SpringBootRestClientScenarioResponse streaming) {
+		return new SpringBootRestClientFullFlowResponse(true, serverUrl, blocking, streaming, null);
+	}
+
+	public static SpringBootRestClientFullFlowResponse failure(String serverUrl, String errorMessage) {
+		return new SpringBootRestClientFullFlowResponse(false, serverUrl, null, null, errorMessage);
+	}
+}

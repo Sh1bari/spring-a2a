@@ -1,9 +1,14 @@
-package io.github.sh1bari.springa2a.examples.springboot.rest.client;
+package io.github.sh1bari.springa2a.examples.springboot.rest.client.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientDemoOverviewResponse;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientDemoRequest;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientFullFlowResponse;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientScenarioResponse;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.service.SpringBootRestClientDemoService;
 import org.a2aproject.sdk.spec.AgentCard;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/demo")
 @Tag(name = "A2A Spring Boot REST Demo",
-		description = "Scenario endpoints for exercising the A2A REST client against the example server")
+		description = "Scenario endpoints for discovery, blocking, streaming, and a combined end-to-end walkthrough")
 public class SpringBootRestClientDemoController {
 
 	private final SpringBootRestClientDemoService demoService;
+
+	@GetMapping
+	@Operation(summary = "Inspect the demo flow",
+			description = "Returns the available scenarios and sample prompts. Use /demo/agent-card for the raw discovery payload.")
+	public ResponseEntity<SpringBootRestClientDemoOverviewResponse> getDemoOverview() {
+		return ResponseEntity.ok(demoService.describeDemo());
+	}
 
 	@GetMapping("/agent-card")
 	@Operation(summary = "Fetch the remote agent card",
@@ -49,7 +61,7 @@ public class SpringBootRestClientDemoController {
 
 	@PostMapping("/full-flow")
 	@Operation(summary = "Run the full demo flow",
-			description = "Fetches the card, runs a blocking call, then runs a streaming call and returns a combined report.")
+			description = "Runs the blocking and streaming flows and returns a combined report without embedding the card.")
 	public ResponseEntity<SpringBootRestClientFullFlowResponse> runFullFlow(
 			@RequestBody(required = false) SpringBootRestClientDemoRequest request) {
 		log.info("Running full-flow demo endpoint");

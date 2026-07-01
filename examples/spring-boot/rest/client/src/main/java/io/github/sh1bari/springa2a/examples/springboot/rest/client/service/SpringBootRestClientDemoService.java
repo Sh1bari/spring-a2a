@@ -1,7 +1,12 @@
-package io.github.sh1bari.springa2a.examples.springboot.rest.client;
+package io.github.sh1bari.springa2a.examples.springboot.rest.client.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.config.SpringBootRestClientExampleProperties;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientDemoOverviewResponse;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientDemoRequest;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientFullFlowResponse;
+import io.github.sh1bari.springa2a.examples.springboot.rest.client.dto.SpringBootRestClientScenarioResponse;
 import org.a2aproject.sdk.A2A;
 import org.a2aproject.sdk.client.Client;
 import org.a2aproject.sdk.client.ClientBuilder;
@@ -31,6 +36,20 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SpringBootRestClientDemoService {
 
 	private final SpringBootRestClientExampleProperties properties;
+
+	public SpringBootRestClientDemoOverviewResponse describeDemo() {
+		try {
+			return SpringBootRestClientDemoOverviewResponse.success(properties.serverUrl(),
+					List.of("GET /demo", "GET /demo/agent-card", "POST /demo/blocking", "POST /demo/streaming",
+							"POST /demo/full-flow"),
+					List.of("hello", "stream this", "help"),
+					"Use the overview endpoint first, then call /demo/agent-card only if you want the raw discovery payload.");
+		}
+		catch (Exception e) {
+			log.error("Demo overview failed", e);
+			return SpringBootRestClientDemoOverviewResponse.failure(properties.serverUrl(), e.getMessage());
+		}
+	}
 
 	public AgentCard fetchAgentCard() {
 		log.info("Fetching agent card from {}", properties.serverUrl());
@@ -77,7 +96,7 @@ public class SpringBootRestClientDemoService {
 			SpringBootRestClientScenarioResponse blocking = runBlockingDemo(agentCard, resolveHelloMessage(request));
 			SpringBootRestClientScenarioResponse streaming = runStreamingDemo(agentCard, resolveStreamMessage(request),
 					resolveStreamingTimeoutSeconds(request));
-			return SpringBootRestClientFullFlowResponse.success(properties.serverUrl(), agentCard, blocking, streaming);
+			return SpringBootRestClientFullFlowResponse.success(properties.serverUrl(), blocking, streaming);
 		}
 		catch (Exception e) {
 			log.error("Full flow demo failed", e);
@@ -111,7 +130,7 @@ public class SpringBootRestClientDemoService {
 			throw new IllegalStateException("Blocking demo failed", errorRef.get());
 		}
 
-		return SpringBootRestClientScenarioResponse.success("blocking", properties.serverUrl(), agentCard, messageText,
+		return SpringBootRestClientScenarioResponse.success("blocking", properties.serverUrl(), messageText,
 				receivedMessage.get(), List.copyOf(events));
 	}
 
@@ -159,7 +178,7 @@ public class SpringBootRestClientDemoService {
 			throw new IllegalStateException("Streaming demo failed", errorRef.get());
 		}
 
-		return SpringBootRestClientScenarioResponse.success("streaming", properties.serverUrl(), agentCard, messageText,
+		return SpringBootRestClientScenarioResponse.success("streaming", properties.serverUrl(), messageText,
 				receivedMessage.get(), List.copyOf(events));
 	}
 
