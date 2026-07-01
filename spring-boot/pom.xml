@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Integration</name>
     <description>Spring Boot integration for A2A</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <modules>
         <module>server</module>
         <module>client</module>

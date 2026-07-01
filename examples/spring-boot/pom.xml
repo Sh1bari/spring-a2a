@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Examples</name>
     <description>Spring Boot examples for the Agent2Agent Protocol (A2A)</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

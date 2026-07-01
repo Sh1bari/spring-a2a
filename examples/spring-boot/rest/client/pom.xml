@@ -17,6 +17,10 @@
     <name>A2A Spring Boot REST Client Example</name>
     <description>Runnable Spring Boot REST client example for A2A</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.a2aproject.sdk</groupId>

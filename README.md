@@ -1,5 +1,6 @@
 # Spring A2A
 
+[![Build](https://github.com/Sh1bari/spring-a2a/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/Sh1bari/spring-a2a/actions/workflows/build.yml)
 [![Spring Boot REST TCK](https://github.com/Sh1bari/spring-a2a/actions/workflows/run-spring-boot-rest-tck.yml/badge.svg?branch=master)](https://github.com/Sh1bari/spring-a2a/actions/workflows/run-spring-boot-rest-tck.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
@@ -98,7 +99,7 @@ mvn clean install
 <dependency>
     <groupId>io.github.sh1bari</groupId>
     <artifactId>a2a-spring-boot-starter-server-rest</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -195,11 +196,45 @@ The current REST client demo is an example application, not yet a Spring Boot cl
 
 ## Validation
 
-The REST server integration is validated with automated tests and the official A2A REST Technology Compatibility Kit.
+There are two independent checks:
+
+- `Build` verifies compilation and tests on Java 17, 21, and 25.
+- `Spring Boot REST TCK` validates the REST server against the official A2A Technology Compatibility Kit.
+
+To run the regular build locally:
+
+```shell
+mvn -B verify
+```
+
+To run the REST TCK locally:
 
 ```shell
 bash ./scripts/run-spring-boot-rest-tck.sh
 ```
+
+## Releases
+
+Spring A2A releases are versioned, signed, and published in two places:
+
+- Maven Central for dependency consumers;
+- GitHub Releases for direct downloads of the same library artifacts.
+
+Each release includes:
+
+- the three library jars;
+- matching `sources.jar` and `javadoc.jar` artifacts;
+- SHA-256 checksums for the GitHub Release assets.
+
+Release process:
+
+- build and test the project with `mvn -B verify`;
+- publish the three libraries to Maven Central with the release script;
+- create a GitHub Release for the same version tag.
+
+Example release headline:
+
+`Spring A2A 0.1.0`
 
 ## License
 

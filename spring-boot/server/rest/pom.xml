@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Server REST Aggregator</name>
     <description>Aggregator for the Spring Boot REST server integration modules</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <modules>
         <module>spring-boot-server-rest</module>
         <module>spring-boot-starter-server-rest</module>

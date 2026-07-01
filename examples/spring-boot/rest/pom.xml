@@ -17,6 +17,10 @@
     <name>A2A Spring Boot REST Examples</name>
     <description>Spring Boot REST examples for the Agent2Agent Protocol (A2A)</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <modules>
         <module>client</module>
         <module>server</module>

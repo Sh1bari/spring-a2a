@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Server REST Example</name>
     <description>Runnable Spring Boot REST server example for A2A</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.sh1bari</groupId>
