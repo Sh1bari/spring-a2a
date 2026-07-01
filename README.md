@@ -42,6 +42,7 @@ If `OPENROUTER_API_KEY` is not set, the help flow still works and returns a clea
 ## Source Of Truth
 
 - [Documentation index](docs/README.md)
+- [Compatibility](docs/compatibility.md)
 - [Contributing](CONTRIBUTING.md)
 
 ## How It Works

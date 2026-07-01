@@ -13,6 +13,7 @@ Use it when you need exact runtime properties, REST payloads, example wiring, or
 - [Runtime configuration](spring-boot-runtime-config.md)
 - [REST contract](spring-boot-rest-contract.md)
 - [REST example reference](spring-boot-rest-example.md)
+- [Compatibility](compatibility.md)
 
 ## Build And Tooling
 
