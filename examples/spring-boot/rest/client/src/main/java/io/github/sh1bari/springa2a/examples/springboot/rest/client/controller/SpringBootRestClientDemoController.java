@@ -59,6 +59,15 @@ public class SpringBootRestClientDemoController {
 		return ResponseEntity.ok(demoService.runStreamingDemo(request));
 	}
 
+	@PostMapping("/help")
+	@Operation(summary = "Run the help message flow",
+			description = "Sends a help request through A2A and returns the model-backed response.")
+	public ResponseEntity<SpringBootRestClientScenarioResponse> runHelp(
+			@RequestBody(required = false) SpringBootRestClientDemoRequest request) {
+		log.info("Running help demo endpoint");
+		return ResponseEntity.ok(demoService.runHelpDemo());
+	}
+
 	@PostMapping("/full-flow")
 	@Operation(summary = "Run the full demo flow",
 			description = "Runs the blocking and streaming flows and returns a combined report without embedding the card.")

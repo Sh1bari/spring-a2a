@@ -1,6 +1,13 @@
 spring:
   application:
     name: a2a-spring-boot-examples-rest-server
+  ai:
+    openai:
+      base-url: https://openrouter.ai/api
+      api-key: ${OPENROUTER_API_KEY:}
+      chat:
+        options:
+          model: openai/gpt-oss-120b:free
   a2a:
     executor:
       core-pool-size: 2

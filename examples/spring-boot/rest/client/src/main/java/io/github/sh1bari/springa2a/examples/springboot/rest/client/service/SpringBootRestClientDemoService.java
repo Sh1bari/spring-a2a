@@ -41,7 +41,7 @@ public class SpringBootRestClientDemoService {
 		try {
 			return SpringBootRestClientDemoOverviewResponse.success(properties.serverUrl(),
 					List.of("GET /demo", "GET /demo/agent-card", "POST /demo/blocking", "POST /demo/streaming",
-							"POST /demo/full-flow"),
+							"POST /demo/help", "POST /demo/full-flow"),
 					List.of("hello", "stream this", "help"),
 					"Use the overview endpoint first, then call /demo/agent-card only if you want the raw discovery payload.");
 		}
@@ -67,7 +67,7 @@ public class SpringBootRestClientDemoService {
 		String messageText = resolveHelloMessage(request);
 		try {
 			AgentCard agentCard = fetchAgentCard();
-			return runBlockingDemo(agentCard, messageText);
+			return runScenarioDemo(agentCard, "blocking", messageText);
 		}
 		catch (Exception e) {
 			log.error("Blocking demo failed", e);
@@ -93,10 +93,12 @@ public class SpringBootRestClientDemoService {
 	public SpringBootRestClientFullFlowResponse runFullFlow(SpringBootRestClientDemoRequest request) {
 		try {
 			AgentCard agentCard = fetchAgentCard();
-			SpringBootRestClientScenarioResponse blocking = runBlockingDemo(agentCard, resolveHelloMessage(request));
+			SpringBootRestClientScenarioResponse blocking = runScenarioDemo(agentCard, "blocking",
+					resolveHelloMessage(request));
 			SpringBootRestClientScenarioResponse streaming = runStreamingDemo(agentCard, resolveStreamMessage(request),
 					resolveStreamingTimeoutSeconds(request));
-			return SpringBootRestClientFullFlowResponse.success(properties.serverUrl(), blocking, streaming);
+			SpringBootRestClientScenarioResponse help = runHelpDemo(agentCard);
+			return SpringBootRestClientFullFlowResponse.success(properties.serverUrl(), blocking, streaming, help);
 		}
 		catch (Exception e) {
 			log.error("Full flow demo failed", e);
@@ -104,17 +106,17 @@ public class SpringBootRestClientDemoService {
 		}
 	}
 
-	private SpringBootRestClientScenarioResponse runBlockingDemo(AgentCard agentCard, String messageText)
-			throws Exception {
+	private SpringBootRestClientScenarioResponse runScenarioDemo(AgentCard agentCard, String scenario,
+			String messageText) throws Exception {
 		List<String> events = new ArrayList<>();
 		AtomicReference<String> receivedMessage = new AtomicReference<>();
 		AtomicReference<Throwable> errorRef = new AtomicReference<>();
 
 		try (Client client = createClient(agentCard, false)) {
 			Message message = A2A.toUserMessage(messageText);
-			log.info("Running blocking demo with message: {}", messageText);
+			log.info("Running {} demo with message: {}", scenario, messageText);
 			client.sendMessage(message, List.of((event, card) -> {
-				String eventDescription = describeEvent("blocking", event, card);
+				String eventDescription = describeEvent(scenario, event, card);
 				events.add(eventDescription);
 				log.info(eventDescription);
 				if (event instanceof MessageEvent messageEvent) {
@@ -122,16 +124,32 @@ public class SpringBootRestClientDemoService {
 				}
 			}), throwable -> {
 				errorRef.set(throwable);
-				log.error("Blocking transport callback reported an error", throwable);
+				log.error("{} transport callback reported an error", scenario, throwable);
 			}, null);
 		}
 
 		if (errorRef.get() != null) {
-			throw new IllegalStateException("Blocking demo failed", errorRef.get());
+			throw new IllegalStateException(scenario + " demo failed", errorRef.get());
 		}
 
-		return SpringBootRestClientScenarioResponse.success("blocking", properties.serverUrl(), messageText,
+		return SpringBootRestClientScenarioResponse.success(scenario, properties.serverUrl(), messageText,
 				receivedMessage.get(), List.copyOf(events));
+	}
+
+	public SpringBootRestClientScenarioResponse runHelpDemo() {
+		try {
+			AgentCard agentCard = fetchAgentCard();
+			return runHelpDemo(agentCard);
+		}
+		catch (Exception e) {
+			log.error("Help demo failed", e);
+			return SpringBootRestClientScenarioResponse.failure("help", properties.serverUrl(), "help", List.of(),
+					e.getMessage());
+		}
+	}
+
+	private SpringBootRestClientScenarioResponse runHelpDemo(AgentCard agentCard) throws Exception {
+		return runScenarioDemo(agentCard, "help", "help");
 	}
 
 	private SpringBootRestClientScenarioResponse runStreamingDemo(AgentCard agentCard, String messageText,

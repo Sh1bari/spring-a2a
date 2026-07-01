@@ -25,6 +25,8 @@
     <properties>
         <revision>0.1.0-SNAPSHOT</revision>
         <a2a.sdk.version>1.1.0.Final</a2a.sdk.version>
+        <lombok.version>1.18.46</lombok.version>
+        <spring-ai.version>1.1.2</spring-ai.version>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-javaformat.version>0.0.47</spring-javaformat.version>
@@ -65,6 +67,11 @@
                 <groupId>org.a2aproject.sdk</groupId>
                 <artifactId>a2a-java-sdk-tests-server-common</artifactId>
                 <version>${a2a.sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.sh1bari</groupId>
@@ -145,6 +152,13 @@
                     <version>3.15.0</version>
                     <configuration>
                         <parameters>true</parameters>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
                 <plugin>

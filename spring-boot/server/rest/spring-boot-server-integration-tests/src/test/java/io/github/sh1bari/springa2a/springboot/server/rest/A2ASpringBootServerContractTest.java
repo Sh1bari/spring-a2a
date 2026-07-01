@@ -90,6 +90,47 @@ class A2ASpringBootServerContractTest extends AbstractA2AServerTest {
 		builder.withTransport(RestTransport.class, new RestTransportConfigBuilder());
 	}
 
+	@Override
+	public void testRequestScopedBeanAvailableOnAgentExecutorThreadStreaming() throws Exception {
+		Message message = Message.builder()
+			.messageId("request-scoped-streaming-test")
+			.role(Message.Role.ROLE_USER)
+			.parts(List.of(new TextPart("request-scoped:test")))
+			.build();
+
+		java.util.concurrent.CountDownLatch completionLatch = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.atomic.AtomicReference<Task> taskRef = new java.util.concurrent.atomic.AtomicReference<>();
+		java.util.concurrent.atomic.AtomicReference<Throwable> errorRef = new java.util.concurrent.atomic.AtomicReference<>();
+
+		getClient().sendMessage(message, List.of((event, card) -> {
+			if (event instanceof org.a2aproject.sdk.client.TaskEvent taskEvent) {
+				taskRef.set(taskEvent.getTask());
+				completionLatch.countDown();
+			}
+			else if (event instanceof org.a2aproject.sdk.client.TaskUpdateEvent taskUpdateEvent) {
+				taskRef.set(taskUpdateEvent.getTask());
+				completionLatch.countDown();
+			}
+		}), throwable -> {
+			errorRef.set(throwable);
+			completionLatch.countDown();
+		});
+
+		org.junit.jupiter.api.Assertions.assertTrue(completionLatch.await(30, java.util.concurrent.TimeUnit.SECONDS),
+				"Request should complete within timeout");
+		org.junit.jupiter.api.Assertions.assertNull(errorRef.get(), "Should not have received an error");
+
+		Task task = taskRef.get();
+		org.junit.jupiter.api.Assertions.assertNotNull(task, "Should have received a task");
+		org.junit.jupiter.api.Assertions.assertEquals(org.a2aproject.sdk.spec.TaskState.TASK_STATE_COMPLETED,
+				task.status().state());
+		org.junit.jupiter.api.Assertions.assertNotNull(task.artifacts());
+		org.junit.jupiter.api.Assertions.assertFalse(task.artifacts().isEmpty());
+		org.a2aproject.sdk.spec.Part part = task.artifacts().get(0).parts().get(0);
+		org.junit.jupiter.api.Assertions.assertInstanceOf(TextPart.class, part);
+		org.junit.jupiter.api.Assertions.assertEquals("request-scoped:request-scoped-value", ((TextPart) part).text());
+	}
+
 	@SpringBootConfiguration
 	@EnableAutoConfiguration
 	@Import(TestSupportController.class)
