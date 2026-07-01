@@ -99,7 +99,7 @@ mvn clean install
 <dependency>
     <groupId>io.github.sh1bari</groupId>
     <artifactId>a2a-spring-boot-starter-server-rest</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 
