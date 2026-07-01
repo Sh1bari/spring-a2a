@@ -72,9 +72,17 @@ jobs:
           for entry in "${modules[@]}"; do
             module="${entry%%|*}"
             artifact="${entry##*|}"
-            cp "$module/target/$artifact-$version.jar" "release-assets/"
-            cp "$module/target/$artifact-$version-sources.jar" "release-assets/"
-            cp "$module/target/$artifact-$version-javadoc.jar" "release-assets/"
+            jar_file="$module/target/$artifact-$version.jar"
+            sources_file="$module/target/$artifact-$version-sources.jar"
+            javadoc_file="$module/target/$artifact-$version-javadoc.jar"
+
+            cp "$jar_file" "release-assets/"
+            if [ -f "$sources_file" ]; then
+              cp "$sources_file" "release-assets/"
+            fi
+            if [ -f "$javadoc_file" ]; then
+              cp "$javadoc_file" "release-assets/"
+            fi
           done
 
           (cd release-assets && sha256sum * > SHA256SUMS.txt)

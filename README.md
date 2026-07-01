@@ -223,7 +223,7 @@ Spring A2A releases are versioned, signed, and published in two places:
 Each release includes:
 
 - the three library jars;
-- matching `sources.jar` and `javadoc.jar` artifacts;
+- matching `sources.jar` and `javadoc.jar` artifacts where the module has source code and published API docs;
 - SHA-256 checksums for the GitHub Release assets.
 
 Release process:

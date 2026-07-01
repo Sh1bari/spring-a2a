@@ -56,3 +56,5 @@ The release workflow runs `verify` and publishes the same library jars plus thei
 
 - Maven Central coordinates for consumers;
 - GitHub Release downloads for people who prefer a direct artifact.
+
+Modules that do not contain source code or public API documentation only publish the main jar asset.
