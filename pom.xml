@@ -9,10 +9,10 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>A2A Spring Boot</name>
-    <description>Standalone Spring Boot integration and examples for A2A.</description>
+    <name>Spring A2A</name>
+    <description>Spring Boot integration and examples for Agent2Agent (A2A) applications.</description>
 
-    <url>https://github.com/sh1bari/a2a-spring-boot</url>
+    <url>https://github.com/Sh1bari/spring-a2a</url>
 
     <licenses>
         <license>
@@ -22,10 +22,25 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>sh1bari</id>
+            <name>Vladimir Krasnov</name>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/Sh1bari/spring-a2a.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/Sh1bari/spring-a2a.git</developerConnection>
+        <url>https://github.com/Sh1bari/spring-a2a</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
-        <revision>0.1.0-SNAPSHOT</revision>
+        <revision>0.1.1</revision>
         <a2a.sdk.version>1.1.0.Final</a2a.sdk.version>
         <lombok.version>1.18.46</lombok.version>
+        <central.publishing.plugin.version>0.9.0</central.publishing.plugin.version>
         <spring-ai.version>1.1.2</spring-ai.version>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -108,7 +123,8 @@
                 <artifactId>flatten-maven-plugin</artifactId>
                 <version>${flatten-maven-plugin.version}</version>
                 <configuration>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <flattenMode>ossrh</flattenMode>
+                    <flattenDependencyMode>all</flattenDependencyMode>
                     <updatePomFile>true</updatePomFile>
                     <outputDirectory>${project.build.directory}</outputDirectory>
                 </configuration>
@@ -178,6 +194,85 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release-assets</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.2</version>
+                        <configuration>
+                            <doclint>none</doclint>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>central-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central.publishing.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <excludeArtifacts>
+                                <excludeArtifact>io.github.sh1bari:a2a-spring-boot-parent</excludeArtifact>
+                                <excludeArtifact>io.github.sh1bari:a2a-spring-boot</excludeArtifact>
+                                <excludeArtifact>io.github.sh1bari:a2a-spring-boot-server</excludeArtifact>
+                                <excludeArtifact>io.github.sh1bari:a2a-spring-boot-server-rest-parent</excludeArtifact>
+                            </excludeArtifacts>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.8</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <modules>
         <module>spring-boot</module>

@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Server REST SUT</name>
     <description>Runnable Spring Boot REST SUT for external A2A TCK validation</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.sh1bari</groupId>

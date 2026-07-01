@@ -17,6 +17,7 @@ Use it when you need exact runtime properties, REST payloads, example wiring, or
 ## Build And Tooling
 
 - [Spring Java Format](spring-javaformat.md)
+- [Publishing To Maven Central](publishing.md)
 
 ## Update Rules
 

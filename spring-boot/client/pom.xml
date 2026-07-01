@@ -16,4 +16,8 @@
 
     <name>A2A Spring Boot Client Integration</name>
     <description>Client-side Spring Boot integration aggregator</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>

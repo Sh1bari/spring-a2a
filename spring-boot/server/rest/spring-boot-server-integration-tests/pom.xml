@@ -17,6 +17,10 @@
     <name>A2A Spring Boot Server Integration Tests</name>
     <description>Integration tests for the Spring Boot server starter</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.sh1bari</groupId>

@@ -16,4 +16,8 @@
 
     <name>A2A Spring Boot Server JSON-RPC Aggregator</name>
     <description>JSON-RPC Spring Boot server integration aggregator</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>

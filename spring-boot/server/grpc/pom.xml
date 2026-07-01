@@ -16,4 +16,8 @@
 
     <name>A2A Spring Boot Server gRPC Aggregator</name>
     <description>gRPC Spring Boot server integration aggregator</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 </project>
