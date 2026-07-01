@@ -6,19 +6,26 @@ This document is the source of truth for the runnable REST example applications.
 
 | App | Module | Artifact | Role |
 | --- | --- | --- | --- |
-| Server | `examples/spring-boot/rest/server` | `a2a-spring-boot-examples-rest-server` | Exposes the A2A REST server. |
-| Client | `examples/spring-boot/rest/client` | `a2a-spring-boot-examples-rest-client` | Calls the server and demonstrates the client flow. |
+| Server | `examples/spring-boot/rest/server` | `a2a-spring-boot-examples-rest-server` | Exposes the A2A REST server and the demo `AgentExecutor`. |
+| Client | `examples/spring-boot/rest/client` | `a2a-spring-boot-examples-rest-client` | Renders the browser guide and playground and calls the server over HTTP. |
 
-## Demo Flow
+## What The Example Shows
 
-The example is intentionally structured as a short walkthrough:
+The client application renders a browser-based playground at `/guide`.
 
-1. `GET /demo` shows the available scenarios and sample prompts.
-2. `GET /demo/agent-card` exposes the raw discovery payload when you need it.
-3. `POST /demo/blocking` demonstrates a direct request/response exchange.
-4. `POST /demo/streaming` demonstrates a task with streaming updates.
-5. `POST /demo/help` demonstrates a client request that reaches the server-side Spring AI model through A2A.
-6. `POST /demo/full-flow` combines the blocking, streaming, and help flows in one response.
+It demonstrates:
+
+1. agent discovery through `GET /.well-known/agent-card.json`;
+2. normal A2A message exchange through `POST /message:send`;
+3. task creation and inspection through `GET /tasks/{taskId}`;
+4. task streaming through `POST /message:stream`;
+5. task subscription through `POST /tasks/{taskId}:subscribe`;
+6. push notification configuration through the task push config endpoints;
+7. push callback delivery in the client inbox.
+
+## Screenshot
+
+![Spring A2A REST example](../assets/rest-example-site.png)
 
 ## Server Configuration
 
@@ -45,6 +52,8 @@ spring:
       consumption-timeout-seconds: 5
 ```
 
+If `OPENROUTER_API_KEY` is missing, the example server returns `Mock response from LLM`.
+
 ## Client Configuration
 
 ```yaml
@@ -58,6 +67,7 @@ spring:
       hello-message: hello from the Spring Boot REST client
       stream-message: stream from the Spring Boot REST client
       streaming-timeout-seconds: 15
+      callback-url: http://localhost:18081/guide/push-notifications/callback
 ```
 
 ## How To Run
@@ -74,21 +84,13 @@ Start the client in a second terminal:
 mvn -pl examples/spring-boot/rest/client -am spring-boot:run
 ```
 
-## Manual Verification
+Then open:
 
-Use the REST contract documented here:
+- `http://localhost:18081/guide`
+- `http://localhost:18081/guide/playground`
+
+## Related Documents
 
 - [REST contract](spring-boot-rest-contract.md)
-
-Try these prompts against the server:
-
-- `hello`
-- `help`
-- `stream this`
-
-The example is intentionally small, but it is now designed to teach the flow instead of only proving that endpoints exist:
-
-- the server demonstrates discovery, direct replies, help output, and streaming task updates
-- the server also demonstrates a model-backed help step inside the A2A `help` flow
-- the client demonstrates a blocking flow, a streaming flow, a model-backed help request, and a combined scenario
-- Swagger UI is used for manual inspection on the client side
+- [Runtime configuration](spring-boot-runtime-config.md)
+- [Compatibility](compatibility.md)

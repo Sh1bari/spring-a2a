@@ -26,18 +26,13 @@ Spring A2A connects those abstractions to Spring Boot by:
 - delegating requests to application-defined agent logic;
 - allowing runtime components to be replaced with custom Spring beans.
 
-## What You Will See
+## Examples
 
-The runnable REST example shows a complete A2A flow:
+The repository also includes runnable example applications alongside the libraries.
 
-- a client discovers the server via `GET /demo`;
-- the client can fetch the raw `AgentCard` if needed;
-- the client sends blocking and streaming A2A requests;
-- the client sends `help` through A2A;
-- the server answers `help` through a model-backed Spring AI call inside the A2A executor;
-- the same flow is documented in Swagger UI for quick manual testing.
+- [REST example](examples/spring-boot/rest/README.md) - the current transport example. It starts a server and a small browser-friendly web UI for exploring the REST flow end to end.
 
-If `OPENROUTER_API_KEY` is not set, the help flow still works and returns a clear fallback message instead of failing the app.
+That example is the first fully documented example area. Additional transports will follow the same pattern with their own example index and runnable UI where needed.
 
 ## Source Of Truth
 
@@ -127,36 +122,6 @@ class AgentConfiguration {
 
 Spring Boot detects these beans, configures the A2A runtime, and exposes the REST transport automatically.
 
-The public agent card is available at:
-
-```text
-GET /.well-known/agent-card.json
-```
-
-### Run The Example
-
-```shell
-mvn -pl examples/spring-boot/rest/server -am spring-boot:run
-```
-
-The example server starts on port `18080`.
-
-In another terminal, start the client:
-
-```shell
-mvn -pl examples/spring-boot/rest/client -am spring-boot:run
-```
-
-Then try:
-
-- `GET http://localhost:18081/demo`
-- `POST http://localhost:18081/demo/blocking`
-- `POST http://localhost:18081/demo/streaming`
-- `POST http://localhost:18081/demo/help`
-- `POST http://localhost:18081/demo/full-flow`
-
-See the complete [REST server example](examples/spring-boot/rest/server).
-
 ## Project Structure
 
 ```text
@@ -187,13 +152,6 @@ spring-a2a
 ```
 
 The JSON-RPC, gRPC, and Spring Boot client library modules currently reserve the intended project structure and do not yet represent completed integrations.
-
-## Examples
-
-- [REST server example](examples/spring-boot/rest/server) - demonstrates auto-configuration, `AgentCard`, `AgentExecutor`, model-backed help, and streaming task flows.
-- [REST client demo](examples/spring-boot/rest/client) - uses the upstream A2A Java SDK client to exercise the REST server and show the full walkthrough.
-
-The current REST client demo is an example application, not yet a Spring Boot client starter.
 
 ## Validation
 

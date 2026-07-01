@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Spring A2A Playground</title>
+    <link rel="stylesheet" th:href="@{/guide/guide.css}"/>
+</head>
+<body>
+<div class="page-shell playground-shell" th:attr="data-server-url=${page.serverUrl}">
+    <header class="playground-hero panel">
+        <div class="playground-hero-copy">
+            <p class="eyebrow">Spring A2A Playground</p>
+            <h1>Test real REST requests and watch the emitter live</h1>
+            <p class="lede">Pick a scenario, edit the payload, run it, and follow the live events without leaving this page.</p>
+            <div class="feature-strip">
+                <span class="feature-chip">REST</span>
+                <span class="feature-chip" th:text="${page.clientStatusMessage}">Client: running</span>
+                <span class="feature-chip" th:text="${page.transport}">Transport</span>
+                <span class="method-badge" th:text="${page.serverAvailable} ? 'Server reachable' : 'Server unavailable'">Server</span>
+            </div>
+        </div>
+        <div class="playground-hero-status">
+            <article class="status-card">
+                <span class="info-label">Server URL</span>
+                <strong th:text="${page.serverUrl}">http://localhost:8080</strong>
+            </article>
+            <article class="status-card">
+                <span class="info-label">A2A SDK</span>
+                <strong th:text="${page.a2aSdkVersion}">1.1.0.Final</strong>
+            </article>
+            <article class="status-card">
+                <span class="info-label">Spring Boot</span>
+                <strong th:text="${page.springBootVersion}">3.5.0</strong>
+            </article>
+            <article class="status-card" id="playground-stream-status-card">
+                <span class="info-label">Emitter</span>
+                <strong id="playground-emitter-status">Idle</strong>
+            </article>
+            <article class="status-card status-card-session">
+                <span class="info-label">Session</span>
+                <strong id="playground-current-task" th:text="${page.currentTaskId != null ? page.currentTaskId : 'none yet'}">none yet</strong>
+                <span id="playground-current-context" class="status-card-subtle" th:text="${page.currentContextId != null ? page.currentContextId : 'none yet'}">none yet</span>
+            </article>
+            <article class="status-card">
+                <span class="info-label">Callback URL</span>
+                <strong th:text="${page.callbackUrl}">http://localhost:18081/guide/push-notifications/callback</strong>
+            </article>
+        </div>
+    </header>
+
+    <main class="playground-grid">
+        <aside class="playground-column">
+            <section class="panel playground-panel playground-templates-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Scenarios</h2>
+                        <span class="panel-note">Choose the request you want to test</span>
+                    </div>
+                </div>
+                <div class="playground-template-list">
+                    <article class="playground-template-card"
+                             th:each="template : ${page.playgroundTemplates}"
+                             th:classappend="${template.id() == page.playgroundTemplates.get(0).id() ? ' active' : ''}"
+                             th:attr="data-template-id=${template.id()},
+                                      data-title=${template.title()},
+                                      data-description=${template.description()},
+                                      data-method=${template.method()},
+                                      data-endpoint=${template.endpoint()},
+                                      data-default-json=${template.defaultRequestJson()},
+                                      data-stream=${template.stream()},
+                                      data-requires-task-id=${template.requiresTaskId()}">
+                        <div class="scenario-card-head">
+                            <span class="step-badge" th:text="|${template.order()}|">1</span>
+                            <span class="method-badge" th:text="${template.method()}">POST</span>
+                        </div>
+                        <h3 th:text="${template.title()}">Send Message</h3>
+                        <p th:text="${template.description()}">Request description</p>
+                        <div class="endpoint-meta">
+                            <span th:text="${template.endpoint()}">/message:send</span>
+                            <span th:text="${template.stream()} ? 'Streaming' : 'Single response'">Single response</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+        </aside>
+
+        <section class="playground-column playground-main">
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2 id="playground-template-title">Send Message</h2>
+                        <span class="panel-note" id="playground-template-endpoint">POST /message:send</span>
+                    </div>
+                    <span class="panel-note" id="playground-template-mode">Editable JSON</span>
+                </div>
+                <p class="big-copy" id="playground-template-description">
+                    Send a normal prompt and inspect the direct response.
+                </p>
+
+                <div class="playground-toolbar">
+                    <button class="ghost-button" type="button" id="playground-use-task-id">Use current task ID</button>
+                    <button class="ghost-button" type="button" id="playground-reset-json">Reset template</button>
+                    <button class="ghost-button" type="button" id="playground-stop-stream">Stop stream</button>
+                    <button class="primary-button" type="button" id="playground-run">Run request</button>
+                </div>
+
+                <label class="playground-editor">
+                    <span class="info-label">JSON body</span>
+                    <textarea id="playground-json" spellcheck="false"></textarea>
+                </label>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Result</h2>
+                        <span class="panel-note" id="playground-status">Ready to run</span>
+                    </div>
+                </div>
+
+                <div class="playground-result-grid">
+                    <div class="result-card">
+                        <span class="info-label">What happened</span>
+                        <p id="playground-human">Choose a template and run it.</p>
+                    </div>
+                    <div class="result-card">
+                        <span class="info-label">Request</span>
+                        <p id="playground-http">No request yet.</p>
+                        <p id="playground-state">State: -</p>
+                    </div>
+                    <div class="result-card">
+                        <span class="info-label">Task / Context</span>
+                        <p id="playground-task">Task: -</p>
+                        <p id="playground-context">Context: -</p>
+                    </div>
+                </div>
+
+                <details class="server-response-details" open>
+                    <summary>Raw server JSON</summary>
+                    <div class="code-block server-response-card">
+                        <pre><code id="playground-server-response">No response yet.</code></pre>
+                    </div>
+                </details>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Callback inbox</h2>
+                        <span class="panel-note">Incoming push notifications for this browser session</span>
+                    </div>
+                    <button class="ghost-button" type="button" id="playground-refresh-callbacks">Refresh</button>
+                </div>
+                <div id="playground-callback-log" class="playground-callback-log">
+                    <div class="result-empty">No callbacks yet.</div>
+                </div>
+            </article>
+        </section>
+
+        <aside class="playground-column">
+            <section class="panel playground-panel playground-emitter-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Emitter</h2>
+                        <span class="panel-note">Real events arrive here as the stream runs</span>
+                    </div>
+                    <button class="ghost-button" type="button" id="playground-clear-emitter">Clear</button>
+                </div>
+                <div id="playground-emitter-log" class="playground-emitter-log">
+                    <div class="result-empty">Streaming events will appear here.</div>
+                </div>
+            </section>
+        </aside>
+    </main>
+</div>
+
+<script th:src="@{/guide/playground.js}"></script>
+</body>
+</html>
