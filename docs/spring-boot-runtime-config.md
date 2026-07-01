@@ -14,32 +14,35 @@ This document is the source of truth for the Spring Boot runtime configuration u
 
 | Property | Default | Purpose |
 | --- | --- | --- |
-| `a2a.executor.core-pool-size` | `5` | Core size of the internal executor. |
-| `a2a.executor.max-pool-size` | `50` | Maximum size of the internal executor. |
-| `a2a.executor.keep-alive-seconds` | `60` | Idle timeout for extra executor threads. |
-| `a2a.executor.queue-capacity` | `100` | Queue size for the internal executor. |
-| `a2a.blocking.agent-timeout-seconds` | `30` | Timeout for agent-side blocking operations. |
-| `a2a.blocking.consumption-timeout-seconds` | `5` | Timeout for event consumption operations. |
-| `a2a.agent-card.cache.max-age` | `3600` | Agent card cache max age in seconds. |
+| `spring.a2a.executor.core-pool-size` | `5` | Core size of the internal executor. |
+| `spring.a2a.executor.max-pool-size` | `50` | Maximum size of the internal executor. |
+| `spring.a2a.executor.keep-alive-seconds` | `60` | Idle timeout for extra executor threads. |
+| `spring.a2a.executor.queue-capacity` | `100` | Queue size for the internal executor. |
+| `spring.a2a.blocking.agent-timeout-seconds` | `30` | Timeout for agent-side blocking operations. |
+| `spring.a2a.blocking.consumption-timeout-seconds` | `5` | Timeout for event consumption operations. |
+| `spring.a2a.agent-card.cache.max-age` | `3600` | Agent card cache max age in seconds. |
 
 ## Shared Runtime Example
 
 Use this as the baseline runtime configuration for server modules:
 
 ```yaml
-a2a:
-  executor:
-    core-pool-size: 5
-    max-pool-size: 50
-    keep-alive-seconds: 60
-    queue-capacity: 100
-  blocking:
-    agent-timeout-seconds: 30
-    consumption-timeout-seconds: 5
-  agent-card:
-    cache:
-      max-age: 3600
+spring:
+  a2a:
+    executor:
+      core-pool-size: 5
+      max-pool-size: 50
+      keep-alive-seconds: 60
+      queue-capacity: 100
+    blocking:
+      agent-timeout-seconds: 30
+      consumption-timeout-seconds: 5
+    agent-card:
+      cache:
+        max-age: 3600
 ```
+
+Legacy `a2a.*` keys are still accepted by the runtime config provider for backward compatibility, but new configuration should use `spring.a2a.*`.
 
 ## Bean Override Model
 

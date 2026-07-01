@@ -34,7 +34,7 @@ final class SpringEnvironmentA2AConfigProvider implements A2AConfigProvider {
 
 	@Override
 	public String getValue(String name) {
-		String value = environment.getProperty(name);
+		String value = resolveProperty(name);
 		if (value != null) {
 			LOGGER.trace("Config value '{}' = '{}' (from Spring Environment)", name, value);
 			return value;
@@ -47,7 +47,7 @@ final class SpringEnvironmentA2AConfigProvider implements A2AConfigProvider {
 
 	@Override
 	public Optional<String> getOptionalValue(String name) {
-		String value = environment.getProperty(name);
+		String value = resolveProperty(name);
 		if (value != null) {
 			LOGGER.trace("Optional config value '{}' = '{}' (from Spring Environment)", name, value);
 			return Optional.of(value);
@@ -57,6 +57,20 @@ final class SpringEnvironmentA2AConfigProvider implements A2AConfigProvider {
 		LOGGER.trace("Optional config value '{}' = '{}' (from DefaultValuesConfigProvider)", name,
 				defaultValue.orElse("<absent>"));
 		return defaultValue;
+	}
+
+	private String resolveProperty(String name) {
+		String value = environment.getProperty(name);
+		if (value != null) {
+			return value;
+		}
+		if (name.startsWith("a2a.")) {
+			return environment.getProperty("spring." + name);
+		}
+		if (name.startsWith("spring.a2a.")) {
+			return environment.getProperty(name.substring("spring.".length()));
+		}
+		return null;
 	}
 
 }

@@ -1,0 +1,41 @@
+name: Build And Test Java Matrix
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**/docs/**'
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '**/docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: [17, 21, 25]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and test
+        run: mvn -B test
+
