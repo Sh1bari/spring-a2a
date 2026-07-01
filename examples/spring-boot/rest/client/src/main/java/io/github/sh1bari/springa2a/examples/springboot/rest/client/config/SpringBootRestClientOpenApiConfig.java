@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(info = @Info(title = "A2A Spring Boot REST Client Demo", version = "1.0.0", description = """
 		Scenario-based demo app for the A2A Spring Boot REST integration.
 
-		Start with the overview endpoint, then run blocking and streaming scenarios.
+		Start with the overview endpoint, then run blocking, streaming, and AI-summary scenarios.
 		Use /demo/agent-card only when you want the raw discovery payload.
 		"""), servers = @Server(url = "http://localhost:18081"), tags = { @Tag(name = "A2A Spring Boot REST Demo",
 		description = "Scenario endpoints for a compact A2A REST client walkthrough") })

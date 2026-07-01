@@ -15,6 +15,12 @@ import java.util.Locale;
 @Component
 public class SpringBootRestServerAgentExecutor implements AgentExecutor {
 
+	private final SpringBootRestServerAiService aiService;
+
+	public SpringBootRestServerAgentExecutor(SpringBootRestServerAiService aiService) {
+		this.aiService = aiService;
+	}
+
 	@Override
 	public void execute(RequestContext context, AgentEmitter agentEmitter) {
 		String input = context.getUserInput("\n");
@@ -24,8 +30,16 @@ public class SpringBootRestServerAgentExecutor implements AgentExecutor {
 
 		if (normalizedInput.contains("help")) {
 			log.info("Returning capabilities overview");
-			agentEmitter.sendMessage(
-					"This demo understands hello, stream, and help. Try a message containing 'stream' to see task updates.");
+			SpringBootRestServerAiService.AiCallResult aiCallResult = aiService.generateHelpNote(input);
+			String message = "This demo understands hello, stream, and help.";
+			if (aiCallResult.generated()) {
+				message = message + " Model-backed help: " + aiCallResult.content();
+			}
+			else {
+				message = message + " Model-backed help unavailable: " + aiCallResult.fallbackReason()
+						+ ". Try the help flow again after setting OPENROUTER_API_KEY.";
+			}
+			agentEmitter.sendMessage(message);
 			return;
 		}
 

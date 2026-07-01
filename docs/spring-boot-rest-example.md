@@ -17,7 +17,8 @@ The example is intentionally structured as a short walkthrough:
 2. `GET /demo/agent-card` exposes the raw discovery payload when you need it.
 3. `POST /demo/blocking` demonstrates a direct request/response exchange.
 4. `POST /demo/streaming` demonstrates a task with streaming updates.
-5. `POST /demo/full-flow` combines the blocking and streaming flows in one response.
+5. `POST /demo/help` demonstrates a client request that reaches the server-side Spring AI model through A2A.
+6. `POST /demo/full-flow` combines the blocking, streaming, and help flows in one response.
 
 ## Server Configuration
 
@@ -26,6 +27,13 @@ server:
   port: 18080
 
 spring:
+  ai:
+    openai:
+      base-url: https://openrouter.ai/api/v1
+      api-key: ${OPENROUTER_API_KEY:}
+      chat:
+        options:
+          model: openai/gpt-oss-120b:free
   a2a:
     executor:
       core-pool-size: 2
@@ -81,5 +89,6 @@ Try these prompts against the server:
 The example is intentionally small, but it is now designed to teach the flow instead of only proving that endpoints exist:
 
 - the server demonstrates discovery, direct replies, help output, and streaming task updates
-- the client demonstrates a blocking flow, a streaming flow, and a combined scenario
+- the server also demonstrates a model-backed help step inside the A2A `help` flow
+- the client demonstrates a blocking flow, a streaming flow, a model-backed help request, and a combined scenario
 - Swagger UI is used for manual inspection on the client side
